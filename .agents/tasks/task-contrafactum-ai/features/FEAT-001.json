@@ -2,7 +2,7 @@
   "id": "FEAT-001",
   "type": "feat",
   "description": "Create the core application files for contrafactum-ai: prompts.py, generator.py, validator.py, repair.py, app.py, requirements.txt, and updated README.md. This is the full MVP implementation.",
-  "status": "in_progress",
+  "status": "completed",
   "steps": [
     "Create requirements.txt at /projects/sandbox/pyesia/requirements.txt with: streamlit, openai, anthropic, python-dotenv (for env var loading). Also include numpy and matplotlib which are already dependencies of pyesia.",
     "Create prompts.py at /projects/sandbox/pyesia/prompts.py with master prompts. Include: SYSTEM_PROMPT (defines the AI as a Mexican Spanish lyricist that writes contrafactums), GENERATION_PROMPT (template that receives: original lyrics structure as JSON template with section names, line counts, syllable counts per line, rhyme pattern, rhyme endings; new theme; style; instructs the AI to produce lyrics matching the template exactly), REPAIR_PROMPT (template that receives: the failing lines with their expected metrics and what went wrong, instructs AI to rewrite only those lines while preserving rhyme scheme and meaning). Prompts must emphasize: natural Mexican Spanish, zero literal copying of phrases from original, maintain syllable count within +/-1, maintain rhyme pattern.",
@@ -28,5 +28,5 @@
     "cd /projects/sandbox/pyesia && timeout 10 streamlit run app.py --server.headless true --server.port 8599 & sleep 5 && curl -s http://localhost:8599 | head -20 && kill %1 || true"
   ],
   "blocked_reason": null,
-  "findings": ""
+  "findings": "All verification steps passed. pyenv default python is 3.9.25 (use python3 command). pip install -e . and requirements install worked cleanly. Template extraction, validator, and Streamlit startup all confirmed working. No API keys available so LLM calls cannot be tested end-to-end but all import paths and non-LLM logic validated."
 }
