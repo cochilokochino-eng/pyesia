@@ -1,0 +1,35 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "Convert project from Streamlit web app to CLI tool for contrafactum generation. Move app.py to deprecated/, create analyzer.py, contrafactum.py CLI entry point, inputs/ and outputs/ directories, update requirements.txt, and rewrite README.md.",
+  "status": "in_progress",
+  "steps": [
+    "Move app.py to deprecated/app.py",
+    "Create analyzer.py wrapping pyesia functions for structure/metric/rhyme analysis",
+    "Create contrafactum.py as CLI entry point with --tema and --estilo arguments",
+    "Create inputs/letra_base.txt with a sample corrido",
+    "Create outputs/.gitkeep",
+    "Update requirements.txt to remove streamlit",
+    "Rewrite README.md with CLI usage instructions"
+  ],
+  "acceptance_criteria": [
+    "app.py moved to deprecated/app.py",
+    "analyzer.py exists and exports analyze_lyrics function",
+    "contrafactum.py CLI runs with --tema and --estilo arguments",
+    "inputs/letra_base.txt exists with sample text",
+    "outputs/ directory exists",
+    "requirements.txt does not contain streamlit",
+    "README.md has CLI usage instructions",
+    "All imports work: python -c 'from analyzer import analyze_lyrics; from generator import extract_template; from validator import validate_lyrics; from repair import repair_lyrics; print(\"OK\")'",
+    "contrafactum.py --help works"
+  ],
+  "verification": [
+    "cd /projects/sandbox/pyesia && python -c \"from analyzer import analyze_lyrics; print('OK')\"",
+    "cd /projects/sandbox/pyesia && python contrafactum.py --help",
+    "cd /projects/sandbox/pyesia && test -f deprecated/app.py && echo 'app.py moved'",
+    "cd /projects/sandbox/pyesia && test -f inputs/letra_base.txt && echo 'input exists'",
+    "cd /projects/sandbox/pyesia && test -d outputs && echo 'outputs dir exists'"
+  ],
+  "blocked_reason": null,
+  "findings": null
+}

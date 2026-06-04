@@ -1,87 +1,103 @@
-# Pyesia: A toolbox for prosodic analysis of poetry in Spanish
+# Contrafactum CLI
 
-Pyesia allows to perform automatic analysis of the prosody in of poetry written in Spanish. Currently, the main features are:
+Herramienta de linea de comandos para generar contrafactums a partir de una letra base en espanol.
 
-> Count syllables
+Un **contrafactum** es una nueva letra que mantiene la estructura metrica, el esquema de rima y la organizacion en secciones de la cancion original, pero con un tema completamente diferente.
 
-> Localize tonic syllables
+## Requisitos
 
-> Localize synalephas and synalephas-hyatus
+- Python 3.9+
+- API key de OpenAI o Anthropic
 
-> Detect rhyme
-
-> Basic analysis of a poem verse by verse: Number of phological/metric syllables, position of the tonic syllables, final rhyme
-
-> Basic plots showing the analysis
-
-To do: Quantification of the number of syllables per tonic syllable.
-
-Do you need another feature, you have new ideas? Please contact me at g.serranonajera@gmail.com
-
-
-# Pyesia: Herramientas para el análisis prosódico de poesía en español
-
-Pyesia permite el análisis automático de la prosodia de poesia en español. Actualmente, las principales características son:
-
-> Contar de sílabas
-
-> Localizar sílabas tónicas
-
-> Localizar sinalefas y sinalefas-hiato
-
-> Detectar rimas
-
-> Analisis básico del poema verso a verso: Número de sílabas fonológicas/métricas, posición de las sílabas tónicas, rima final
-
-> Gráficos básicos para mostrar los resultados del análisis
-
-Por hacer: Cuantificación de número de sílabas por sílaba tónica.
-
-¿Necesitas alguna otra herramient o tienes nuevas ideas? Por favor contáctame en g.serranonajera@gmail.com
-
----
-
-# Contrafactum AI
-
-Contrafactum AI is a local Streamlit application that generates contrafactum lyrics -- new lyrics that maintain the exact metric structure, rhyme scheme, and section layout of a base Spanish song, but with a completely different theme.
-
-## How it works
-
-1. **Template extraction**: Analyzes the base lyrics using pyesia's prosodic engine to detect syllable counts, rhyme patterns, and section structure.
-2. **Generation**: Sends the metric template, your chosen theme, and style to an LLM (OpenAI or Anthropic) to produce new lyrics.
-3. **Validation**: Checks that the generated lyrics match the original metric structure (syllable count within +/-1) and rhyme scheme.
-4. **Repair**: If lines fail validation, automatically asks the LLM to rewrite only the failing lines (up to 3 attempts).
-
-## Installation
+## Instalacion
 
 ```bash
-pip install -r requirements.txt
 pip install -e .
+pip install -r requirements.txt
 ```
 
-## Configuration
+## Configuracion
 
-Set your LLM provider API key as an environment variable:
+Configura tu API key como variable de entorno:
 
 ```bash
-# For OpenAI (default)
-export OPENAI_API_KEY="your-key-here"
+# Para OpenAI (default)
+export OPENAI_API_KEY="tu-api-key"
 
-# For Anthropic
-export ANTHROPIC_API_KEY="your-key-here"
+# Para Anthropic
+export ANTHROPIC_API_KEY="tu-api-key"
 export CONTRAFACTUM_PROVIDER="anthropic"
 ```
 
-## Usage
+## Uso
+
+1. Pega tu letra base en `inputs/letra_base.txt`.
+
+2. Ejecuta el script:
 
 ```bash
-streamlit run app.py
+python contrafactum.py --tema "Corrido para el Dia del Padre" --estilo "corrido norteno clasico mexicano"
 ```
 
-Then in the browser:
+3. Resultados:
+   - `outputs/contrafactum.md` - La letra generada
+   - `outputs/reporte.md` - Reporte tecnico con validacion de metrica y rima
 
-1. Paste a base lyric in Spanish
-2. Write a new theme
-3. Choose a style (corrido mexicano, norteno clasico, banda, espiritual, etc.)
-4. Click "Generar Contrafactum"
-5. View the generated lyrics, metric report, rhyme report, and any failed lines
+## Argumentos
+
+| Argumento | Requerido | Descripcion |
+|-----------|-----------|-------------|
+| `--tema` | Si | Tema nuevo para el contrafactum |
+| `--estilo` | Si | Estilo musical deseado |
+| `--input` | No | Archivo de entrada (default: `inputs/letra_base.txt`) |
+| `--output` | No | Archivo de salida para la letra (default: `outputs/contrafactum.md`) |
+| `--reporte` | No | Archivo de salida para el reporte (default: `outputs/reporte.md`) |
+
+## Ejemplos
+
+```bash
+# Corrido para el Dia del Padre
+python contrafactum.py --tema "Corrido para el Dia del Padre" --estilo "corrido norteno clasico mexicano"
+
+# Bolero romantico
+python contrafactum.py --tema "Amor a distancia" --estilo "bolero clasico"
+
+# Cumbia festiva
+python contrafactum.py --tema "La fiesta del pueblo" --estilo "cumbia nortena"
+
+# Usar un archivo de entrada diferente
+python contrafactum.py --tema "Mi pueblo" --estilo "ranchera" --input mi_letra.txt
+```
+
+## Como funciona
+
+1. **Lectura** - Lee la letra base de `inputs/letra_base.txt`
+2. **Analisis** - Detecta estructura, secciones, lineas, metrica y patron de rima usando pyesia
+3. **Plantilla** - Crea una plantilla tecnica con silabas metricas y grupos de rima por verso
+4. **Generacion** - Genera una nueva letra via LLM respetando la plantilla
+5. **Validacion** - Verifica que la letra generada cumpla con metrica y rima
+6. **Reparacion** - Reescribe solo los versos que fallaron (hasta 3 intentos)
+7. **Salida** - Guarda letra final y reporte tecnico
+
+## Estructura del proyecto
+
+```
+contrafactum.py    - CLI principal
+analyzer.py        - Analisis de estructura, metrica y rima
+generator.py       - Generacion de contrafactum via LLM
+validator.py       - Validacion de metrica y rima
+repair.py          - Reparacion de versos fallidos
+prompts.py         - Prompts para el LLM
+inputs/            - Letras base de entrada
+outputs/           - Letras generadas y reportes
+pyesia/            - Libreria de analisis prosodico
+```
+
+## Pyesia
+
+Este proyecto utiliza [pyesia](https://github.com/cochilokochino-eng/pyesia), una libreria de analisis prosodico para poesia en espanol que proporciona:
+
+- Conteo de silabas metricas
+- Deteccion de sinalefas
+- Clasificacion de versos (agudos, llanos, esdrujulos)
+- Deteccion de esquema de rima (consonante y asonante)
