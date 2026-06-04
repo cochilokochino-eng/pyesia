@@ -1,0 +1,7 @@
+{
+  "task_id": "task-contrafactum-ai",
+  "task_description": "Convert pyesia prosodic analysis library into a Streamlit app called contrafactum-ai that generates contrafactum lyrics maintaining the metric structure, rhyme scheme, and section layout of a base Spanish lyric.",
+  "status": "in_progress",
+  "feature_order": ["FEAT-001"],
+  "blocked_reason": null
+}
