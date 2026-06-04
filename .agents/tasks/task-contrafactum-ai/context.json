@@ -1,0 +1,21 @@
+{
+  "project_type": "Python prosodic analysis library being extended into a Streamlit app for contrafactum generation",
+  "language": "Python",
+  "build_system": "setuptools (setup.py), pip install",
+  "test_framework": "None currently - will add basic pytest tests",
+  "build_command": "pip install -e . && pip install -r requirements.txt",
+  "test_command": "python -c \"from pyesia.spanish_poetry_functions import syllables, rhyme, rhyme_scheme, perform_analysis; print('OK')\"",
+  "verification_instructions": "1. Install requirements: pip install -r requirements.txt && pip install -e . 2. Run: streamlit run app.py --server.headless true (verify it starts without errors) 3. Test imports: python -c 'from generator import generate_contrafactum; from validator import validate_lyrics; from repair import repair_lyrics; from prompts import SYSTEM_PROMPT; print(\"All imports OK\")'",
+  "snapshot_or_generated_files": null,
+  "setup_instructions": "pip install -e . && pip install -r requirements.txt",
+  "environment_constraints": "OPEN_INTERNET - can install any packages. Python 3.11.14 via pyenv. No API keys available for OpenAI/Anthropic so LLM calls cannot be tested end-to-end, but code structure and non-LLM logic can be validated.",
+  "contribution_requirements": "No CONTRIBUTING.md exists. Keep changes minimal and focused on MVP.",
+  "key_patterns": "pyesia/spanish_poetry_functions.py contains all prosodic analysis functions. Key functions: syllables(word), tonic_syllable(syllables_word), detect_synalephas(...), rhyme(word1, word2), rhyme_scheme(poem), clean_punctuation(text), perform_analysis(poem_path). The perform_analysis function reads from a file path - we will need to adapt to work with text strings directly. The rhyme_scheme function takes a list of verse strings (not a file). The module uses 'from spanish_poetry_functions import *' style imports internally.",
+  "relevant_files": [
+    "pyesia/spanish_poetry_functions.py",
+    "pyesia/pyesia.py",
+    "setup.py",
+    "README.md"
+  ],
+  "directory_structure": "pyesia/ - main package with spanish_poetry_functions.py (all analysis logic) and pyesia.py (class wrapper). Root level - setup.py, README.md, LICENSE.txt. New files (app.py, generator.py, validator.py, repair.py, prompts.py, requirements.txt) will be created at root level."
+}
